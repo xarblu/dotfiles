@@ -46,6 +46,7 @@ require("lazy").setup({
         opts = {
             flavour = "mocha",
             transparent_background = true,
+            show_end_of_buffer = true,
             integrations = {
                 treesitter = true,
                 coc_nvim = true,
