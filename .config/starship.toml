@@ -1,0 +1,38 @@
+# Wait 10 milliseconds for starship to check files under the current directory.
+scan_timeout = 10
+
+# Disable the blank line at the start of the prompt
+add_newline = false
+
+# Display EVERYTHING
+format = "${all}"
+
+# Customize Prompt Character
+[character]
+success_symbol = '[\( ˘▽˘\)っ](bold green) [❯](bold blue)'
+error_symbol = '[¯\\_\(ツ\)_/¯](bold red) [❯](bold blue)'
+vicmd_symbol = '[ヽ\(ˇヘˇ\)ノ](bold purple) [❮](bold blue)'
+
+[c]
+disabled = true
+
+[custom.cpp]
+format = "via [$symbol]($style)[clang++ v$output]($style) "
+symbol = "  "
+detect_extensions = ["cpp", "hpp"]
+style ="bold #417AB1"
+command = "clang++ --version | head -1 | awk '{ print $3 }'"
+
+[custom.c]
+format = "via [$symbol]($style)[clang v$output]($style) "
+symbol = "  "
+detect_extensions = ["c", "h"]
+style ="bold #6876C5"
+command = "clang --version | head -1 | awk '{ print $3 }'"
+
+[custom.ebuild]
+format = "via $symbol [$output]($style) "
+symbol = "📦"
+detect_extensions = ["ebuild"]
+style ="bold #FF8700"
+command = "ebuild --version"

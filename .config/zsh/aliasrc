@@ -1,0 +1,24 @@
+alias \
+	genkernel-keep-config="genkernel --install --microcode=amd --save-config --nice=10 --makeopts="-j8" --kernel-config=/proc/config.gz all" \
+	grep="grep -i --color=auto" \
+	rsync-backup="rsync --archive --update --mkpath --times --delete --human-readable --partial --progress --stats" \
+	enable-obs-camera="sudo modprobe v4l2loopback devices=1 video_nr=10 card_label="OBS Cam" exclusive_caps=1" \
+	µ="micro " \
+	date="date --iso-8601=seconds" \
+	cal="cal --iso" \
+	obs-cam="doas modprobe v4l2loopback devices=1 video_nr=10 card_label=OBS Cam exclusive_caps=1" \
+	emerge-fetch-status="tail -f /var/log/emerge-fetch.log" \
+	radeontop="radeontop --color" \
+	rsync-update="rsync -avPHAXu" \
+	watch="watch --color" \
+	glxgears="vblank_mode=0 glxgears" \
+	ip="ip --color" \
+	:q="exit" \
+	cp="cp --reflink=auto" \
+	diff="diff --unified --color" \
+	pd="pushd" \
+	pp="popd" \
+	dirs="dirs -v" \
+	lolcat="lolcat --random --24bit" \
+	notes='nvim ~/note.md' \
+    emlop='emlop -H'

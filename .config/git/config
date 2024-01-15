@@ -1,0 +1,15 @@
+[user]
+	email = xarblu@protonmail.com
+	name = Xarblu
+	signingkey = xarblu@protonmail.com
+[color]
+	ui = auto
+[git]
+	terminalAuthentication = true
+	githubAuthentication = true
+[credential]
+	helper = store
+[commit]
+	gpgsign = true
+[push]
+	autoSetupRemote = true

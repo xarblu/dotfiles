@@ -1,0 +1,37 @@
+#Functions for terminal usage
+
+function du-sort() {
+	du -hax --max-depth=1 "$@" | sort -hr
+}
+
+function cpr() {
+  	rsync --archive --update -hh --partial --info=stats1,progress2 --modify-window=1 "$@"
+} 
+function mvr() {
+  	rsync --archive -hh --partial --info=stats1,progress2 --modify-window=1 --remove-source-files "$@"
+}
+
+function mkcd() {
+	mkdir -p $1 && cd $1
+}
+
+function usediff() {
+    \diff --unified --color \
+        <(quse --installed --quiet --exact "$1") \
+        <(quse --installed --quiet --exact "$2")
+}
+
+#some text formatting Functions
+function ansi()          { echo -e "\e[${1}m${*:2}\e[0m"; }
+function bold()          { ansi 1 "$@"; }
+function italic()        { ansi 3 "$@"; }
+function underline()     { ansi 4 "$@"; }
+function strikethrough() { ansi 9 "$@"; }
+function black()         { ansi 30 "$@"; }
+function red()           { ansi 31 "$@"; }
+function green()         { ansi 32 "$@"; }
+function brown()         { ansi 33 "$@"; }
+function blue()          { ansi 34 "$@"; }
+function purple()        { ansi 35 "$@"; }
+function cyan()          { ansi 36 "$@"; }
+function light_gray()    { ansi 37 "$@"; }
