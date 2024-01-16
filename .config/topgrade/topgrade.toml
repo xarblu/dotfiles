@@ -25,7 +25,7 @@ disable = ["git_repos", "dotnet", "gcloud", "gem", "go", "home_manager", "rustup
 
 # Run `sudo -v` to cache credentials at the start of the run; this avoids a
 # blocking password prompt in the middle of a possibly-unattended run.
-pre_sudo = true
+#pre_sudo = false
 
 # Run inside tmux
 #run_in_tmux = true
@@ -85,7 +85,6 @@ pull_predefined = false
 "Emerge Depclean" = "sudo emerge --verbose=n --depclean"
 "Live Package Rebuild" = "sudo emerge --oneshot @smart-live-rebuild"
 "coc.nvim extensions" = "nvim -c 'CocUpdateSync|q' --headless"
-"zinit" = "-i zinit update --all"
 
 [brew]
 #greedy_cask = true
