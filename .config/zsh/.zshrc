@@ -150,23 +150,6 @@ if [[ -f ${FFMPEG_DATADIR:=${XDG_DATA_HOME:-${HOME}/.config/ffmpeg}/ffmpeg}/ffmp
 fi
 #[END] FFMPEG PROFILES
 
-#[START] kitty-shell-integration
-if [[ -n ${KITTY_INSTALLATION_DIR} ]]; then
-  export KITTY_SHELL_INTEGRATION="${KITTY_SHELL_INTEGRATION:=enabled}"
-  autoload -Uz -- "${KITTY_INSTALLATION_DIR}"/shell-integration/zsh/kitty-integration
-  kitty-integration
-  unfunction kitty-integration
-fi
-#[END] kitty-shell-integration
-
-#[START]wezterm-shell-integration
-if [[ -n ${WEZTERM_CONFIG_DIR} ]]; then
-	if [[ -f ${WEZTERM_CONFIG_DIR}/wezterm.sh ]]; then
-		source ${WEZTERM_CONFIG_DIR}/wezterm.sh
-	fi
-fi
-#[END]wezterm-shell-integration
-
 #[START] Zinit Plugin Section
 if [[ -f ${ZDOTDIR}/zinitrc ]]; then
 	source ${ZDOTDIR}/zinitrc
