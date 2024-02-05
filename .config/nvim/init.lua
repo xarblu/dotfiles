@@ -100,6 +100,7 @@ require("lazy").setup({
 })
 
 -- treesitter module options
+require("nvim-treesitter.install").prefer_git = true
 require("nvim-treesitter.configs").setup({
     -- auto install missing parsers
     auto_install = true,

@@ -42,7 +42,7 @@ autoload -Uz colors && colors
 PS1="%(?.%F{green}[✓].%F{red}[%?])%f %F{27}%n@%m%f %B%F{22}%~%f%b %B%#%b"$'\n'"%B%F{81}»%f%b "
 
 case ${TERM} in
-	[aEkx]term*|rxvt*|gnome*|konsole*|alacritty|interix|tmux*)
+	[aEkx]term*|rxvt*|gnome*|konsole*|alacritty|interix|tmux*|wezterm)
 		#Set terminal title for running processes
 		function precmd {
 			printf "\033]0;zsh\007"
@@ -126,13 +126,14 @@ fi
 #[END] External Utils
 
 #[START] Keybinds
-#Use Vim Keybinds (start in insert mode)
-bindkey -v
+#Use Emacs Keybinds
+bindkey -e
 #Custom Keybinds
-bindkey '^[[1;5D' vi-backward-word
-bindkey '^[[1;3D' vi-backward-word
-bindkey '^[[1;5C' vi-forward-word
-bindkey '^[[1;3C' vi-forward-word
+bindkey '^[[1;5A' beginning-of-line # ctrl+up
+bindkey '^[[1;5B' end-of-line # ctrl+down
+bindkey '^[[1;5C' forward-word # ctrl+right
+bindkey '^[[1;5D' backward-word # ctrl+left
+bindkey '^H' backward-delete-word # ctrl+backspace
 #[END] Keybinds
 
 #[START] Aliases & Functions
