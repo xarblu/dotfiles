@@ -96,6 +96,13 @@ require("lazy").setup({
             "gitsigns.nvim",
             "nvim-web-devicons"
         }
+    },
+    {
+        "andweeb/presence.nvim",
+	    opts = {}
+    },
+    {
+        "lambdalisue/suda.vim"
     }
 })
 
