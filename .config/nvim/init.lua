@@ -61,7 +61,10 @@ require("lazy").setup({
     },
     {
         "gentoo/gentoo-syntax",
-        version = "*"
+        version = "*",
+        dependencies = {
+            "dense-analysis/ale"
+        }
     },
     {
         "nvim-tree/nvim-web-devicons",
