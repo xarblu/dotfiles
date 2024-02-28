@@ -94,10 +94,11 @@ if [[ -n "$(command -v starship)" ]]; then
 	eval "$(starship init zsh)"
 fi
 
-#Use eza if available
+#Use eza if available, else use regular ls with some flags
 if [[ -n "$(command -v eza)" ]]; then
-	EXA_FLAGS="--all --long --icons --git --color=auto --group-directories-first"
-	alias ls="eza ${EXA_FLAGS}"
+	alias ls="eza -lag --icons --git --color=auto --group-directories-first"
+else
+    alias ls="ls -lah --color=auto --group-directories-first"
 fi
 
 #Use rmtrash if available
@@ -121,7 +122,7 @@ fi
 
 #And finally a fastfetch (if available)
 if [[ -n "$(command -v fastfetch)" ]]; then
-	fastfetch -c paleofetch.jsonc
+	fastfetch
 fi
 #[END] External Utils
 
