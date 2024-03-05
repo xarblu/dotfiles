@@ -84,6 +84,7 @@ pull_predefined = false
 #"Custom command using interactive shell (unix)" = "-i vim_upgrade"
 "Emerge Depclean" = "sudo emerge --verbose=n --depclean"
 "Live Package Rebuild" = "sudo emerge --oneshot @smart-live-rebuild"
+"Clean Old Kernels" = "sudo eclean-kernel -n3"
 
 [brew]
 #greedy_cask = true
