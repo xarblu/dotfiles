@@ -6,6 +6,12 @@ ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 if [ -f "${ZINIT_HOME}/zinit.zsh" ]; then
     # export ZINIT_HOME for e.g. topgrade
     export ZINIT_HOME
+
+    # zinit settings
+    declare -A ZINIT=(
+        # disable zi and zini aliases
+        [NO_ALIASES]="1"
+    )
     
     # Init
     source "${ZINIT_HOME}/zinit.zsh"

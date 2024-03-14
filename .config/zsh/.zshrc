@@ -75,56 +75,22 @@ case ${TERM} in
 esac
 #[END] Eyecandy
 
-#[START] External Utils
-#lauch tmux if it is available and not launched already
-if [[ -n "$(command -v tmux)" ]]; then
-    if [[ -z "${TMUX}" ]] && [[ "$(hostname)" == ServiceableServer ]]; then 
-    		tmux 
-    		exit
-	fi
-fi
+#[START] Helpers
+# echo to stderr
+function err() {
+    echo "${@}" 1>&2
+}
 
-#Use thefuck if available
-if [[ -n "$(command -v thefuck)" ]]; then
-	eval $(thefuck --alias)
-fi
-
-#Use Starship Prompt if available
-if [[ -n "$(command -v starship)" ]]; then
-	eval "$(starship init zsh)"
-fi
-
-#Use eza if available, else use regular ls with some flags
-if [[ -n "$(command -v eza)" ]]; then
-	alias ls="eza -lag --icons --git --color=auto --group-directories-first"
-else
-    alias ls="ls -lah --color=auto --group-directories-first"
-fi
-
-#Use rmtrash if available
-if [[ -n "$(command -v rmtrash)" ]]; then
-	alias rm="rmtrash -I"
-fi
-if [[ -n "$(command -v rmdirtrash)" ]]; then
-	alias rmdir="rmdirtrash"
-fi
-
-#broot launcher
-if [[ -f ${XDG_CONFIG_HOME:=${HOME}/.config}/broot/launcher/bash/br ]] && [[ -n "$(command -v broot)" ]]; then
-	source ${XDG_CONFIG_HOME:=${HOME}/.config}/broot/launcher/bash/br
-fi
-
-#Bat as (Man-)Pager
-if [[ -n "$(command -v bat)" ]]; then
-	export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-	#export PAGER="sh -c 'col -bx | bat -l txt -p'"
-fi
-
-#And finally a fastfetch (if available)
-if [[ -n "$(command -v fastfetch)" ]]; then
-	fastfetch
-fi
-#[END] External Utils
+# check if $1 is a command that exists
+function has_cmd() {
+    if [[ ${#} -ne 1 ]]; then
+        err "has_cmd() takes only 1 arg"
+        return 1
+    fi
+    command -v "${1}" >/dev/null
+    return ${?}
+}
+#[END] Helpers
 
 #[START] Keybinds
 #Use Emacs Keybinds
@@ -172,4 +138,62 @@ if [[ -n "$(command -v zinit)" ]]; then
     zinit cdreplay -q
 fi
 #[END] Completions
+
+#[START] External Utils
+#lauch tmux if it is available and not launched already
+if has_cmd tmux; then
+    if [[ -z "${TMUX}" ]] && [[ "$(hostname)" == ServiceableServer ]]; then 
+    		tmux
+    		exit
+	fi
+fi
+
+#Use thefuck if available
+if has_cmd thefuck; then
+	eval $(thefuck --alias)
+fi
+
+#Use Starship Prompt if available
+if has_cmd starship; then
+	eval "$(starship init zsh)"
+fi
+
+#Use eza if available, else use regular ls with some flags
+if has_cmd eza; then
+	alias ls="eza -lag --icons --git --color=auto --group-directories-first"
+else
+    alias ls="ls -lah --color=auto --group-directories-first"
+fi
+
+#Use rmtrash if available
+if has_cmd rmtrash; then
+	alias rm="rmtrash -I"
+fi
+if has_cmd rmdirtrash; then
+	alias rmdir="rmdirtrash"
+fi
+
+#broot launcher
+if [[ -f ${XDG_CONFIG_HOME:=${HOME}/.config}/broot/launcher/bash/br ]] && has_cmd broot; then
+	source ${XDG_CONFIG_HOME:=${HOME}/.config}/broot/launcher/bash/br
+fi
+
+# select manpager
+if has_cmd nvim; then
+    export MANPAGER='nvimpager +Man!'
+    export MANWIDTH='999'
+elif has_cmd bat; then
+	export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+fi
+
+# zoxide as cd
+if has_cmd zoxide; then
+    eval "$(zoxide init zsh --cmd cd)"
+fi
+
+#And finally a fastfetch (if available)
+if has_cmd fastfetch; then
+	fastfetch
+fi
+#[END] External Utils
 
