@@ -21,4 +21,4 @@ alias \
     dirs="dirs -v" \
     lolcat="lolcat --random --24bit" \
     notes='nvim ~/note.md' \
-    emlop='emlop -H'
+    emlop='emlop --header yes'
