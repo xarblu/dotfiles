@@ -51,13 +51,13 @@ require("lazy").setup({
     {
         "lewis6991/gitsigns.nvim",
         version = "*",
-        opts = {}
+        config = true
     },
     {
         "lukas-reineke/indent-blankline.nvim",
         version = "*",
         main = "ibl",
-        opts = {}
+        config = true
     },
     {
         "gentoo/gentoo-syntax",
@@ -69,7 +69,7 @@ require("lazy").setup({
     {
         "nvim-tree/nvim-web-devicons",
         version = "*",
-        opts = {}
+        config = true
     },
     {
         "catppuccin/nvim",
@@ -102,10 +102,22 @@ require("lazy").setup({
     },
     {
         "andweeb/presence.nvim",
-	    opts = {}
+	    config = true
     },
     {
-        "lambdalisue/suda.vim"
+        "lambdalisue/suda.vim",
+        init = function()
+            vim.g.suda_smart_edit = 1
+        end
+    },
+    {
+        "jpalardy/vim-slime",
+        init = function()
+            vim.g.slime_target = "wezterm"
+            vim.g.slime_default_config = {
+                pane_direction = "right"
+            }
+        end
     }
 })
 
