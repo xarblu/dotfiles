@@ -149,7 +149,7 @@ require("lazy").setup({
             "hrsh7th/nvim-cmp",
             "nvim-treesitter/nvim-treesitter",
         },
-        build = ":TSInstall vim regex lua bash markdown markdown_inline"
+        build = ":TSInstall! vim regex lua bash markdown markdown_inline"
     }
 })
 
