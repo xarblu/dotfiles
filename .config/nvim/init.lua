@@ -87,14 +87,18 @@ require("lazy").setup({
                     enabled = true,
                     scope_color = "lavender",
                     colored_indent_levels = false
-                }
+                },
+                noice = true,
+                notify = true
             },
             compile_path = vim.fn.stdpath "cache" .. "/catppuccin",
-        }
+        },
+        init = function()
+            vim.cmd.colorscheme "catppuccin"
+        end
     },
     {
         "freddiehaddad/feline.nvim",
-        version = "*",
         dependencies = {
             "gitsigns.nvim",
             "nvim-web-devicons"
@@ -118,6 +122,34 @@ require("lazy").setup({
                 pane_direction = "right"
             }
         end
+    },
+    {
+        "folke/noice.nvim",
+        event = "VeryLazy",
+        opts = {
+            lsp = {
+                -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+                override = {
+                    ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+                    ["vim.lsp.util.stylize_markdown"] = true,
+                    ["cmp.entry.get_documentation"] = true, -- requires hrsh7th/nvim-cmp
+                },
+            },
+            presets = {
+                bottom_search = false, -- use a classic bottom cmdline for search
+                command_palette = true, -- position the cmdline and popupmenu together
+                long_message_to_split = true, -- long messages will be sent to a split
+                inc_rename = false, -- enables an input dialog for inc-rename.nvim
+                lsp_doc_border = false, -- add a border to hover docs and signature help
+            },
+        },
+        dependencies = {
+            "MunifTanjim/nui.nvim",
+            "rcarriga/nvim-notify",
+            "hrsh7th/nvim-cmp",
+            "nvim-treesitter/nvim-treesitter",
+        },
+        build = ":TSInstall vim regex lua bash markdown markdown_inline"
     }
 })
 
@@ -132,9 +164,8 @@ require("nvim-treesitter.configs").setup({
     }
 })
 
--- colour scheme
-vim.cmd.colorscheme "catppuccin"
--- apply catppuccin them to feline
+-- apply catppuccin theme to feline
+-- (require doesn't want to work in lazy spec)
 require("feline").setup({
     components = require("catppuccin.groups.integrations.feline").get()
 })
@@ -252,17 +283,18 @@ vim.api.nvim_create_autocmd('LspAttach', {
 })
 
 -- Completions
-local cmp = require'cmp'
+local cmp = require("cmp")
 cmp.setup({
     snippet = {
         -- REQUIRED - you must specify a snippet engine
         expand = function(args)
-            require('snippy').expand_snippet(args.body)
+            --require('snippy').expand_snippet(args.body)
+            vim.snippet.expand(args.body)
         end,
     },
     window = {
-        -- completion = cmp.config.window.bordered(),
-        -- documentation = cmp.config.window.bordered(),
+        completion = cmp.config.window.bordered(),
+        documentation = cmp.config.window.bordered(),
     },
     mapping = cmp.mapping.preset.insert({
         ['<C-b>'] = cmp.mapping.scroll_docs(-4),
