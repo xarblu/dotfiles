@@ -142,6 +142,9 @@ require("lazy").setup({
                 inc_rename = false, -- enables an input dialog for inc-rename.nvim
                 lsp_doc_border = false, -- add a border to hover docs and signature help
             },
+            messages = {
+                enabled = false, -- kinda too spammy IMO, maybe filter later
+            },
         },
         dependencies = {
             "MunifTanjim/nui.nvim",
@@ -193,9 +196,6 @@ vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.autoindent = true
 vim.opt.expandtab = true
-
--- increase command height
-vim.opt.cmdheight = 2
 
 -- LSP client
 local lspconfig = require("lspconfig")
