@@ -60,7 +60,7 @@ config.initial_rows = 40
 
 ---- Misc ----
 -- set TERM to wezterm (needs terminfo installed)
-config.term = 'wezterm'
+-- config.term = 'wezterm'
 -- Run this on startup (should be a shell)
 config.default_prog = { '/usr/bin/zsh', '-l' }
 
