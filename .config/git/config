@@ -1,7 +1,7 @@
 [user]
 	email = xarblu@protonmail.com
 	name = Xarblu
-	signingkey = xarblu@protonmail.com
+	signingkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOKFlJ45COD0I+BNnPWy73Xgj6rawnc1RW347JHoOirs Xarblu"
 [color]
 	ui = auto
 [git]
@@ -11,5 +11,7 @@
 	helper = store
 [commit]
 	gpgsign = true
+[gpg]
+    format = ssh
 [push]
 	autoSetupRemote = true
