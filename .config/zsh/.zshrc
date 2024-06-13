@@ -189,6 +189,11 @@ if has_cmd zoxide; then
     eval "$(zoxide init zsh --cmd cd)"
 fi
 
+# goldwarden ssh agent
+if [[ -S "${HOME}/.goldwarden-ssh-agent.sock" ]]; then
+    export SSH_AUTH_SOCK="${HOME}/.goldwarden-ssh-agent.sock"
+fi
+
 #And finally a fastfetch (if available)
 if has_cmd fastfetch; then
 	fastfetch
