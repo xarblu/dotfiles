@@ -41,21 +41,14 @@ PS1="%(?.%F{green}[✓].%F{red}[%?])%f %F{27}%n@%m%f %B%F{22}%~%f%b %B%#%b"$'\n'
 
 case ${TERM} in
 	[aEkx]term*|rxvt*|gnome*|konsole*|alacritty|interix|tmux*|wezterm)
-		#Set terminal title for running processes
+		# Set terminal title for running processes
 		function precmd {
 			printf "\033]0;zsh\007"
 		}
 		function preexec {
-			declare -a local args
-			for arg in $(echo ${1}); do args=( ${args[*]} ${arg} ); done
-			case ${args[1]} in
-				sudo|doas)
-					printf "\033]0;${args[1]} ${args[2]}\007"
-					;;
-				*)
-					printf "\033]0;${args[1]}\007"
-					;;
-			esac
+            # $2 is cmd with very long args stripped
+            # TODO: compare with $3 to add ... indicators
+            printf "\033]0;${2}\007"
 		}
 		# Dynamically change cursor style
 		function zle-line-init zle-line-finish zle-keymap-select {
