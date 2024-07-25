@@ -103,6 +103,12 @@ if [[ -f ${ZDOTDIR}/functionrc ]]; then
 fi
 #[END] Aliases & Functions
 
+#[START] Secrets
+if [[ -f ${ZDOTDIR}/.secrets ]]; then
+	source ${ZDOTDIR}/.secrets
+fi
+#[END] Secrets
+
 #[START] FFMPEG PROFILES
 if [[ -f ${FFMPEG_DATADIR:=${XDG_DATA_HOME:-${HOME}/.config/ffmpeg}/ffmpeg}/ffmpeg-arg-bundles.sh ]]; then
 	source ${FFMPEG_DATADIR:=${XDG_DATA_HOME:-${HOME}/.config/ffmpeg}/ffmpeg}/ffmpeg-arg-bundles.sh
