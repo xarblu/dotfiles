@@ -106,7 +106,7 @@ pull_predefined = false
 #pamac_arguments = "--no-devel"
 #enable_tlmgr = true
 emerge_sync_flags = "--jobs=16"
-emerge_update_flags = "--update --with-bdeps=y --deep --oneshot --changed-use --newrepo @world"
+emerge_update_flags = "--update --with-bdeps=y --deep --oneshot --newuse --newrepo @world"
 #redhat_distro_sync = false
 #suse_dup = false
 #rpm_ostree = false
