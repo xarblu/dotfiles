@@ -4,6 +4,9 @@ source /etc/profile
 #Shell
 export SHELL=/bin/zsh
 
+#Path
+export PATH="${XDG_DATA_HOME:-${HOME}/.local/share}/npm/bin:${HOME}/.local/bin:${CARGO_HOME}/bin:${PATH}"
+
 #Locale
 export LANG=en_GB.UTF-8
 export LC_CTYPE=en_GB.UTF-8

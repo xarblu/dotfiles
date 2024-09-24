@@ -10,11 +10,6 @@ if [[ ! -d "${ZDATADIR}" ]]; then
 fi
 #[END] Important Dirs
 
-#[START] PATH
-#Path (in .zshrc and not .zshenv cuz the latter is broken in tmux)
-export PATH="${XDG_DATA_HOME:-${HOME}/.local/share}/npm/bin:${HOME}/.local/bin:${CARGO_HOME}/bin:${PATH}"
-#[END] PATH
-
 #[START] Shell Options
 unsetopt BEEP
 setopt AUTO_CD 
