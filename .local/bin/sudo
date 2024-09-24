@@ -1,0 +1,38 @@
+#!/usr/bin/env python3
+
+import os
+import sys
+
+# run0 wrapper to replace sudo
+
+# these are from run0 --help
+VALID_ARGS = [
+    "-h", "--help",
+    "-V", "--version",
+    "--no-ask-password",
+    "--machine",
+    "--unit",
+    "--property",
+    "--description",
+    "--slice",
+    "--slice-inherit",
+    "-u", "--user",
+    "-g", "--group",
+    "--nice",
+    "-D", "--chdir",
+    "--setenv",
+    "--background",
+]
+
+RUN0_ARGV = ["run0"]
+
+for i in range(len(sys.argv)):
+    if i == 0:
+        continue
+    if not sys.argv[i].startswith("--"):
+        RUN0_ARGV += sys.argv[i:]
+        break
+    if sys.argv[i].split("=", 1)[0] in VALID_ARGS:
+        RUN0_ARGV += [sys.argv[i]]
+
+os.execvp(RUN0_ARGV[0], RUN0_ARGV)
