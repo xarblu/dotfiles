@@ -15,6 +15,19 @@ function mkcd() {
 	mkdir -p $1 && cd $1
 }
 
+function cmake_build_full() {
+    if [[ ! -f ../CMakeLists.txt ]]; then
+        echo "../CMakeLists.txt not found" 1>&2
+        return 1
+    fi
+
+    cmake \
+        -DCMAKE_C_COMPILER=clang \
+        -DCMAKE_CXX_COMPILER=clang++ \
+        -GNinja ..
+    cmake --build . -j$(nproc)
+}
+
 function usediff() {
     \diff --unified --color \
         <(quse --installed --quiet --exact "$1") \
