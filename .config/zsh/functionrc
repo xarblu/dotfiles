@@ -28,6 +28,36 @@ function cmake_build_full() {
     cmake --build . -j$(nproc)
 }
 
+function java_init_project() {
+    # create project dirs
+    mkdir \
+        classes \
+        lib \
+        src
+
+    # fetch JUnit
+    curl -L -o lib/junit-platform-console-standalone.jar \
+        "https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.11.3/junit-platform-console-standalone-1.11.3.jar"
+}
+
+function java_compile_project() {
+    fd .java src --exec-batch javac -d classes -classpath classes:lib/junit-platform-console-standalone.jar
+}
+
+function java_run_project() {
+    java -classpath classes "${@}"
+}
+
+function java_junit() {
+    local scan_classpath
+    if [[ ${#} -eq 0 ]]; then
+        scan_classpath="--scan-classpath"
+    fi
+
+    java -jar lib/junit-platform-console-standalone.jar \
+        --classpath classes "${scan_classpath}"
+}
+
 function usediff() {
     \diff --unified --color \
         <(quse --installed --quiet --exact "$1") \
