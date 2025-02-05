@@ -2,6 +2,10 @@
 
 set -o pipefail
 
+# environment config
+: "${SUDO:=sudo}"
+
+# arg parser
 for arg; do
     case "${arg}" in
         --)
@@ -16,7 +20,7 @@ for arg; do
             ;;
         *)
             # positional args
-            if [[ -z ${AGE} ]]; then
+            if [[ -z "${AGE}" ]]; then
                 AGE="${arg}"
                 shift
                 continue
@@ -28,10 +32,15 @@ for arg; do
 done
 
 if [[ -z "${AGE}" ]]; then
-    echo "Usage: $(basename ${0}) <age in days> [-- {emerge args}]"
+    echo "Usage: $(basename "${0}") <age in days> [-- {emerge args}]"
     exit 1
 fi
 
 PKGS=( $(find /var/db/pkg/ -type d -mtime "+${AGE}" | perl -n -e 'print "=$1\n" if /^\/var\/db\/pkg\/([^\/]+\/[^\/]+)$/') )
 
-sudo emerge "${@}" --oneshot "${PKGS[@]}"
+if [[ -z "${PKGS[*]}" ]]; then
+    echo "No packages older than ${AGE} found"
+    exit 0
+fi
+
+"${SUDO}" emerge "${@}" --oneshot "${PKGS[@]}"
