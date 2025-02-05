@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -o pipefail
+set -euo pipefail
 
 # environment config
 : "${SUDO:=sudo}"
@@ -20,7 +20,11 @@ for arg; do
             ;;
         *)
             # positional args
-            if [[ -z "${AGE}" ]]; then
+            if [[ -z "${AGE:-}" ]]; then
+                if ! [[ "${arg}" =~ [0-9]+ ]]; then
+                    echo "Not a valid integer: ${arg}"
+                    exit 1
+                fi
                 AGE="${arg}"
                 shift
                 continue
@@ -31,7 +35,7 @@ for arg; do
     esac
 done
 
-if [[ -z "${AGE}" ]]; then
+if [[ -z "${AGE:-}" ]]; then
     echo "Usage: $(basename "${0}") <age in days> [-- {emerge args}]"
     exit 1
 fi
@@ -39,7 +43,7 @@ fi
 PKGS=( $(find /var/db/pkg/ -type d -mtime "+${AGE}" | perl -n -e 'print "=$1\n" if /^\/var\/db\/pkg\/([^\/]+\/[^\/]+)$/') )
 
 if [[ -z "${PKGS[*]}" ]]; then
-    echo "No packages older than ${AGE} found"
+    echo "No packages older than ${AGE} days found"
     exit 0
 fi
 
