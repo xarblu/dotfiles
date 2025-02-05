@@ -32,6 +32,6 @@ if [[ -z "${AGE}" ]]; then
     exit 1
 fi
 
-PKGS=( $(find /var/db/pkg/ -type d -mtime "+${AGE}" | perl -n -e 'print "$1\n" if /^\/var\/db\/pkg\/([^\/]+\/[^\/]+)-\d.+$/') )
+PKGS=( $(find /var/db/pkg/ -type d -mtime "+${AGE}" | perl -n -e 'print "=$1\n" if /^\/var\/db\/pkg\/([^\/]+\/[^\/]+)$/') )
 
 sudo emerge "${@}" --oneshot "${PKGS[@]}"
