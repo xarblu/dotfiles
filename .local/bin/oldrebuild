@@ -34,4 +34,4 @@ fi
 
 PKGS=( $(find /var/db/pkg/ -type d -mtime "+${AGE}" | perl -n -e 'print "$1\n" if /^\/var\/db\/pkg\/([^\/]+\/[^\/]+)-\d.+$/') )
 
-sudo emerge "${@}" "${PKGS[@]}"
+sudo emerge "${@}" --oneshot "${PKGS[@]}"
