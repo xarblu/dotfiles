@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+set -o pipefail
+
+for arg; do
+    case "${arg}" in
+        --)
+            # following args are for emerge
+            shift
+            break
+            ;;
+        --*)
+            # invalid flag
+            echo "Unknown flag: ${arg}"
+            exit 1
+            ;;
+        *)
+            # positional args
+            if [[ -z ${AGE} ]]; then
+                AGE="${arg}"
+                shift
+                continue
+            fi
+            echo "Unknown positional arg: ${arg}"
+            exit 1
+            ;;
+    esac
+done
+
+if [[ -z "${AGE}" ]]; then
+    echo "Usage: $(basename ${0}) <age in days> [-- {emerge args}]"
+    exit 1
+fi
+
+PKGS=( $(find /var/db/pkg/ -type d -mtime "+${AGE}" | perl -n -e 'print "$1\n" if /^\/var\/db\/pkg\/([^\/]+\/[^\/]+)-\d.+$/') )
+
+sudo emerge "${@}" "${PKGS[@]}"
