@@ -1,0 +1,11 @@
+# always use extended mode
+--extended
+
+# colour by default
+--color dark
+
+# accurate graphs
+--graph-style eighth-block
+
+# use all threads
+--threads 0
