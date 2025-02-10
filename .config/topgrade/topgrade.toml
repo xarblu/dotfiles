@@ -82,9 +82,10 @@ pull_predefined = false
 [commands]
 #"Python Environment" = "~/dev/.env/bin/pip install -i https://pypi.python.org/simple -U --upgrade-strategy eager jupyter"
 #"Custom command using interactive shell (unix)" = "-i vim_upgrade"
-"Emerge Depclean" = "sudo emerge --verbose=n --depclean"
-"Live Package Rebuild" = "sudo emerge --oneshot @smart-live-rebuild"
-"Clean Old Kernels" = "sudo eclean-kernel -n5"
+"1 Rebuild Old Packages" = "oldrebuild 180"
+"2 Rebuild Live Packages" = "sudo emerge --oneshot @smart-live-rebuild"
+"3 Emerge Depclean" = "sudo emerge --verbose=n --depclean"
+"4 Clean Old Kernels" = "sudo eclean-kernel -n5"
 
 [brew]
 #greedy_cask = true
