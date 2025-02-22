@@ -1,4 +1,5 @@
-#Default Options Passed to ripgrep
-
-#enable smart case by default (ignore case when all lowercase)
+# ignore case when all lowercase
 --smart-case
+
+# search compressed files
+--search-zip
