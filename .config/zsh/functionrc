@@ -24,8 +24,9 @@ function cmake_build_full() {
     cmake \
         -DCMAKE_C_COMPILER=clang \
         -DCMAKE_CXX_COMPILER=clang++ \
+        -DCMAKE_COLOR_DIAGNOSTICS=ON \
         -GNinja ..
-    cmake --build . -j$(nproc)
+    env CLICOLOR_FORCE=1 cmake --build . -j$(nproc)
 }
 
 function java_init_project() {
