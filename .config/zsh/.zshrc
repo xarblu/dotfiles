@@ -43,7 +43,7 @@ case ${TERM} in
 		function preexec {
             # $2 is cmd with very long args stripped
             # TODO: compare with $3 to add ... indicators
-            printf "\033]0;${2}\007"
+            printf "\033]0;%s\007" "${2}"
 		}
 		# Dynamically change cursor style
 		function zle-line-init zle-line-finish zle-keymap-select {
