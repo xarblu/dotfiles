@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+# grab the FLAVOURS from ebuild at $1 and iterate over them
+# executing USE="<flavour>" ebuild <ebuild> <command...>
+
+function main() {
+    if (( $# <= 2 )); then
+        printf "Usage: ${0} <cachyos-kernel ebuild> <ebuild args>\n"
+    fi
+
+    FLAVOURS=( $(perl -e 'while (<>) { $flavours = "$1" if /^FLAVOURS=\"(.*)\"$/; } print "$flavours";' "${1}") )
+
+    if [[ -z "${FLAVOURS}" ]]; then
+        printf "Could not parse FLAVOURS\n"
+    fi
+
+    local eargs=( "${@}" )
+
+    local flavour
+    local -a failed
+    for flavour in "${FLAVOURS[@]}"; do
+        set - env USE="${FLAVOURS[*]/#/-} ${flavour}" ebuild "${eargs[@]}"
+        printf "%s\n" "${*}"
+        if ! "${@}"; then
+            failed+=( "${flavour}" )
+        fi
+    done
+    if (( ${#failed[@]} > 0 )); then
+        printf "Failed with flavours: %s\n" "${failed[*]}"
+    else
+        printf "Yay - All flavours passed :3\n"
+    fi
+}
+main "${@}"
