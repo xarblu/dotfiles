@@ -23,6 +23,8 @@ function main() {
         printf "%s\n" "${*}"
         if ! "${@}"; then
             failed+=( "${flavour}" )
+            printf "Flavour failed: %s\nWaiting 5s in case you want to interrupt and check\n" "flavour"
+            sleep 5
         fi
     done
     if (( ${#failed[@]} > 0 )); then
