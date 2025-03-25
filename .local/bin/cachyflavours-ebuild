@@ -6,12 +6,14 @@
 function main() {
     if (( $# <= 2 )); then
         printf "Usage: ${0} <cachyos-kernel ebuild> <ebuild args>\n"
+        exit 1
     fi
 
     FLAVOURS=( $(perl -e 'while (<>) { $flavours = "$1" if /^FLAVOURS=\"(.*)\"$/; } print "$flavours";' "${1}") )
 
     if [[ -z "${FLAVOURS}" ]]; then
         printf "Could not parse FLAVOURS\n"
+        exit 1
     fi
 
     local eargs=( "${@}" )
@@ -23,12 +25,13 @@ function main() {
         printf "%s\n" "${*}"
         if ! "${@}"; then
             failed+=( "${flavour}" )
-            printf "Flavour failed: %s\nWaiting 5s in case you want to interrupt and check\n" "flavour"
+            printf "Flavour failed: %s\nWaiting 5s in case you want to interrupt and check\n" "${flavour}"
             sleep 5
         fi
     done
     if (( ${#failed[@]} > 0 )); then
         printf "Failed with flavours: %s\n" "${failed[*]}"
+        exit 1
     else
         printf "Yay - All flavours passed :3\n"
     fi
