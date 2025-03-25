@@ -59,12 +59,6 @@ function java_junit() {
         --classpath classes "${scan_classpath}"
 }
 
-function usediff() {
-    \diff --unified --color \
-        <(quse --installed --quiet --exact "$1") \
-        <(quse --installed --quiet --exact "$2")
-}
-
 #some text formatting Functions
 function ansi()          { echo -e "\e[${1}m${*:2}\e[0m"; }
 function bold()          { ansi 1 "$@"; }

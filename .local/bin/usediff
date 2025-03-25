@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+function main() {
+    if (( ${#} != 3 )); then
+        printf "Usage: %s <from use> <to use> <use expand>\n" "${0}"
+        exit 1
+    fi
+
+    local from_use to_use use_expand
+    from_use="${1}"
+    to_use="${2}"
+    use_expand="${3}"
+
+    if [[ "${from_use}" == "${from_use#"${use_expand,,}_"}" ]]; then
+        printf "%s doesn't seem to match USE_EXPAND %s\n" "${from_use}" "${use_expand}"
+        exit 1
+    fi
+
+    diff --unified \
+        <(quse --installed --verbose --quiet --exact "${from_use}") \
+        <(quse --installed --verbose --quiet --exact "${to_use}") |
+        perl -ne "print \"=\$1 ${use_expand^^}: -* ${from_use#"${use_expand,,}_"}\\n\" if /^-(.*)/ and not /^---|\\+\\+\\+/"
+}
+
+main "${@}"
