@@ -172,8 +172,7 @@ fi
 
 # select manpager
 if has_cmd nvim; then
-    export MANPAGER='nvimpager +Man!'
-    export MANWIDTH='999'
+    export MANPAGER='nvim +Man! +"set nowrap"'
 elif has_cmd bat; then
 	export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 fi
