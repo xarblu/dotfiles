@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+# Upload current folder to immich server
+
+function main() {
+    if [[ -z "${IMMICHGO_SERVER}" ]]; then
+        printf "IMMICHGO_SERVER is not set\n"
+        exit 1
+    fi
+    if [[ -z "${IMMICHGO_APIKEY}" ]]; then
+        printf "IMMICHGO_APIKEY is not set\n"
+        exit 1
+    fi
+    if ! command -v immich-go >/dev/null; then
+        printf "immich-go it not installed\n"
+        exit 1
+    fi
+
+    exec immich-go upload from-folder \
+        --server="${IMMICHGO_SERVER}" --api-key="${IMMICHGO_APIKEY}" \
+        --manage-raw-jpeg StackCoverJPG --tag camera .
+}
+main
