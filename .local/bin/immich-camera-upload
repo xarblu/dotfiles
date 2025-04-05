@@ -18,6 +18,9 @@ function main() {
 
     exec immich-go upload from-folder \
         --server="${IMMICHGO_SERVER}" --api-key="${IMMICHGO_APIKEY}" \
-        --manage-raw-jpeg StackCoverJPG --tag camera .
+        --recursive=false \
+        --manage-raw-jpeg=StackCoverJPG \
+        --tag=camera \
+        .
 }
 main
