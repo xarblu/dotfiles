@@ -5,7 +5,7 @@ source /etc/profile
 export SHELL=/bin/zsh
 
 #Path
-export PATH="${XDG_DATA_HOME:-${HOME}/.local/share}/npm/bin:${HOME}/.local/bin:${CARGO_HOME}/bin:${PATH}"
+export PATH="${XDG_DATA_HOME:-${HOME}/.local/share}/npm/bin:${HOME}/.local/bin:${CARGO_HOME:-${HOME}/.cargo}/bin:${PATH}"
 
 #Locale
 export LANG=en_GB.UTF-8
