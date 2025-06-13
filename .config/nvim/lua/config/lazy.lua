@@ -45,6 +45,12 @@ vim.opt.shiftwidth = 4
 vim.opt.autoindent = true
 vim.opt.expandtab = true
 
+-- line wrap
+-- disable by default, in 99% of cases
+-- lines should not reach the screen edge
+-- and be explicitly broken
+vim.opt.wrap = false
+
 -- Setup lazy.nvim
 require("lazy").setup({
     spec = {
