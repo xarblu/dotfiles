@@ -87,7 +87,8 @@ pull_predefined = false
 "2 Rebuild Live Packages" = "sudo emerge --oneshot @smart-live-rebuild"
 "3 Emerge Depclean" = "sudo emerge --verbose=n --depclean"
 "4 Clean Old Distfiles" = "sudo eclean-dist --destructive --fetch-restricted --time-limit=1m"
-"5 Clean Old Kernels" = "sudo eclean-kernel --num=5"
+"5 Clean Old Packages" = "sudo eclean-pkg"
+"6 Clean Old Kernels" = "sudo eclean-kernel --num=5"
 
 [brew]
 #greedy_cask = true
