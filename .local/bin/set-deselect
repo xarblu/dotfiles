@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+# Deselect all packages that would be selected by set in /etc/portage/sets
+
+if (( ${#} != 1 )); then
+    printf "Expected 1 argument: set name" 1>&2
+fi
+
+SET="${1}"
+
+if [[ ! -f "/etc/portage/sets/${SET}" ]]; then
+    printf "Set %s does not exist in /etc/portage/sets" "${SET}" 1>&2
+fi
+
+perl -ne 'print "$_" if not /^#|^\s*$/' "/etc/portage/sets/${SET}" | sudo xargs emerge --ask=n --deselect
