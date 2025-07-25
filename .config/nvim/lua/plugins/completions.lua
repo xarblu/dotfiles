@@ -9,6 +9,10 @@ return {
             -- vim.lsp.enable('<ls>') -- to enable
 
             vim.lsp.enable('ansiblels')
+            vim.lsp.config('bashls', {
+                -- we also want to match ebuild files
+                filetypes = { 'bash', 'sh', 'ebuild' }
+            })
             vim.lsp.enable('bashls') -- dev-util/bash-language-server
             vim.lsp.enable('clangd') -- llvm-core/clang
             vim.lsp.enable('cmake')
