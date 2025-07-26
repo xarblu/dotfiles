@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+# main bashrc to be sourced from ${HOME}/.bashrc
+
+function __main__() {
+    local moddir="${BASH_SOURCE[0]%/*}/modules"
+    if [[ ! -d "${moddir}" ]]; then
+        printf "Config module dir %s does not exist\n" "${moddir}" 1>&2
+        return 1
+    fi
+    
+    # load all modules
+    # only proceed if we could load everything we
+    # expected to avoid a completely broken shell
+    local mod
+    for mod in env utils plugins misc external; do
+        if [[ -f "${moddir}/${mod}.sh" ]]; then
+            # shellcheck disable=SC1090,SC1091
+            source -- "${moddir}/${mod}.sh"
+        else
+            printf "Required module %s does not exist in %s\n" "${mod}" "${moddir}" 1>&2
+            return 1
+        fi
+    done
+
+    # if this shell is not interactive stop here
+    [[ "${-}" != *i* ]] && return 0
+
+    # initialise (install + load) plugins
+    __plugins_init__ || eprintf --warn "Plugin initialisation did not exit cleanly\n"
+
+    # misc setup like ensuring directories/files exist
+    __misc_setup__ || eprintf --warn "Misc setup did not exit cleanly\n"
+
+    # setup stuff related to external tools
+    __external_setup__ || eprintf --warn "External setup did not exit cleanly\n"
+
+    # finalize plugins - this should be at the very end
+    __plugins_finalize__ || eprintf --warn "Plugin finalisation did not exit cleanly\n"
+}
+__main__ || { printf "bashrc: Errors during initialisation\n" 1>&2; }
