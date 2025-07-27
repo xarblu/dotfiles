@@ -18,11 +18,18 @@ function __blesh_install__() {
 }
 
 # load steps for ble.sh
+# TODO: figure out why "emerge @..." spams locale errors on completion
 function __blesh_init__() {
     local blesh_file="${BASH_PLUGDIR}/ble.sh/out/ble.sh"
     if [[ ! -f "${blesh_file}" ]]; then
         eprintf --info "ble.sh not installed at %s. Installing...\n" "${blesh_file}"
         __blesh_install__
+    fi
+
+    # warn if mawk isn't available
+    # gawk "works" but is suboptimal e.g. for multibyte chars
+    if ! has_cmds mawk; then
+        eprintf --warn "Recommended awk implementation mawk not found\n"
     fi
     
     # re-check in case install failed
