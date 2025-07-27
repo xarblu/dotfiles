@@ -18,7 +18,8 @@ function __blesh_install__() {
 }
 
 # load steps for ble.sh
-# TODO: figure out why "emerge @..." spams locale errors on completion
+# NOTE: triple check locales if completion is funny
+# you only want LANG=yourlang and LC_COLLATE=C
 function __blesh_init__() {
     local blesh_file="${BASH_PLUGDIR}/ble.sh/out/ble.sh"
     if [[ ! -f "${blesh_file}" ]]; then
