@@ -18,11 +18,6 @@ HISTSIZE=100000
 # local PATH
 export PATH="${XDG_DATA_HOME:-${HOME}/.local/share}/npm/bin:${HOME}/.local/bin:${CARGO_HOME:-${HOME}/.cargo}/bin:${PATH}"
 
-# locale
-export LANG=en_GB.UTF-8
-export LC_CTYPE=en_GB.UTF-8
-export LC_ALL=en_GB.UTF-8
-
 # stop ksshaskpass from popping up
 unset SSH_ASKPASS
 
