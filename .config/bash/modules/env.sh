@@ -3,13 +3,18 @@
 ### Environment variables for bash itself
 
 # base data directory for non-config state
-BASH_DATADIR="${XDG_DATA_HOME:-"${HOME}/.local/share"}/bash"
+BASH_DATA_DIR="${XDG_DATA_HOME:-"${HOME}/.local/share"}/bash"
 
 # plugin directory
-BASH_PLUGDIR="${BASH_DATADIR}/plugins"
+# shellcheck disable=SC2034
+BASH_PLUGDIR="${BASH_DATA_DIR}/plugins"
+
+# secrets file
+# shellcheck disable=SC2034
+BASH_SECRETS_FILE="${BASH_CONF_DIR}/.secrets"
 
 # bash history
-HISTFILE="${BASH_DATADIR}/history"
+HISTFILE="${BASH_DATA_DIR}/history"
 HISTSIZE=100000
 
 
@@ -31,3 +36,9 @@ export GPG_TTY
 
 # set caca driver to slang to render inside terminal
 export CACA_DRIVER=slang
+
+# load secrets
+if [[ -f "${BASH_SECRETS_FILE}" ]]; then
+    # shellcheck disable=SC1090
+    source -- "${BASH_SECRETS_FILE}"
+fi

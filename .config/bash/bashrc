@@ -3,7 +3,8 @@
 # main bashrc to be sourced from ${HOME}/.bashrc
 
 function __main__() {
-    local moddir="${BASH_SOURCE[0]%/*}/modules"
+    declare -g BASH_CONF_DIR="${BASH_SOURCE[0]%/*}"
+    local moddir="${BASH_CONF_DIR}/modules"
     if [[ ! -d "${moddir}" ]]; then
         printf "Config module dir %s does not exist\n" "${moddir}" 1>&2
         return 1
