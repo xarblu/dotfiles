@@ -14,7 +14,7 @@ function __main__() {
     # only proceed if we could load everything we
     # expected to avoid a completely broken shell
     local mod
-    for mod in env utils plugins misc external; do
+    for mod in env utils plugins misc external functions; do
         if [[ -f "${moddir}/${mod}.sh" ]]; then
             # shellcheck disable=SC1090,SC1091
             source -- "${moddir}/${mod}.sh"
