@@ -9,7 +9,8 @@ fi
 SET="${1}"
 
 if [[ ! -f "/etc/portage/sets/${SET}" ]]; then
-    printf "Set %s does not exist in /etc/portage/sets" "${SET}" 1>&2
+    printf "Set %s does not exist in /etc/portage/sets\n" "${SET}" 1>&2
+    exit 1
 fi
 
 perl -ne 'print "$_" if not /^#|^\s*$/' "/etc/portage/sets/${SET}" | sudo xargs emerge --ask=n --deselect
