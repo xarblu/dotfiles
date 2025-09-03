@@ -8,4 +8,13 @@ function __misc_setup__() {
 
     # append HISTFILE on shell exit instead of overwriting
     shopt -s histappend
+
+    # allow cd without cd
+    shopt -s autocd
+
+    # recursive glob with **
+    shopt -s globstar
+
+    # no match -> empty
+    shopt -s nullglob
 }
