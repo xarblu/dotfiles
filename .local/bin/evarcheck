@@ -1,0 +1,146 @@
+#!/usr/bin/env bash
+
+declare -g EBUILD
+declare -ga VARIABLES
+
+function help() {
+    printf 'Usage: %s EBUILD VARIABLES...\n' "${BASH_SOURCE[0]##*/}"
+    printf '\nFlags:\n'
+    printf '  -h|--help  Print help\n'
+    printf '\nPositional arguments:\n'
+    printf '  EBUILD     Ebuild to check\n'
+    printf '  VARIABLES  Variables to print\n'
+}
+
+function parse_args() {
+    while (( ${#} > 0 )); do
+        case "${1}" in
+            -h|--help)
+                help
+                exit 0
+                ;;
+            *)
+                # positionals
+                if [[ -z "${EBUILD}" ]]; then
+                    EBUILD="${1}"
+                else
+                    VARIABLES+=( "${1}" )
+                fi
+                ;;
+        esac
+        shift
+    done
+    
+    if [[ -z "${EBUILD}" ]]; then
+        printf 'Argument EBUILD is required\n'
+        return 1
+    fi
+
+    if [[ -z "${VARIABLES[*]}" ]]; then
+        printf 'Argument VARIABLES is required\n'
+        return 1
+    fi
+}
+
+function get_ebuild_variable() {
+    local var="${1}"
+
+    local line
+    while IFS=$'\0' read -r line; do
+        if [[ "${line}" =~ ^([^=]+)=(.*)$ ]]; then
+            local name="${BASH_REMATCH[1]}"
+            local value="${BASH_REMATCH[2]}"
+            if [[ "${name}" == "${var}" ]]; then
+                printf '%s' "${value}"
+                return 0
+            fi
+        fi
+    done < <(
+        # ebuild path needs to be absolute because
+        # ebuild.sh changes dir
+        EBUILD="$(readlink -e "${EBUILD}")"
+
+        # file based variables
+        CATEGORY="${EBUILD%/*}"
+        CATEGORY="${CATEGORY%/*}"
+        CATEGORY="${CATEGORY##*/}"
+        PF="${EBUILD##*/}"
+        PF="${PF%.ebuild}"
+        P="${PF%-r*}"
+        # shellcheck disable=SC2034
+        PN="${P%-*}"
+        # shellcheck disable=SC2034
+        PV="${P##*-}"
+        # shellcheck disable=SC2034
+        PR="${PF##*-r}"
+        if [[ "${PF}" == "${PR}" ]]; then
+            PR="r0"
+            PVR="${PV}"
+        else
+            PR="r${PR}"
+            # shellcheck disable=SC2034
+            PVR="${PV}-${PR}"
+        fi
+        # dummy
+        # shellcheck disable=SC2034
+        FILESDIR="FILESDIR/"
+
+        # required, just assume it's 8 here
+        # shellcheck disable=SC2034
+        EAPI=8
+
+        # we want depend phase only, no exec
+        # shellcheck disable=SC2034
+        EBUILD_PHASE=depend
+
+        # required
+        # shellcheck disable=SC2034
+        PORTAGE_BUILDDIR="$(mktemp -d)"
+        mkdir "${PORTAGE_BUILDDIR}"/empty
+
+
+        # where ebuild.sh is located
+        PORTAGE_BIN_PATH=/usr/lib/portage/python3.13
+
+        # repos used for eclass lookup, just gentoo for now
+        # shellcheck disable=SC2034
+        PORTAGE_ECLASS_LOCATIONS=/var/db/repos/gentoo
+
+        # fd where portage pipes "meta variables" like DEPEND, SRC_URI, etc
+        # we don't need this here so /dev/null it is
+        exec 3> /dev/null
+        # shellcheck disable=SC2034
+        PORTAGE_PIPE_FD=3
+
+        # subshelled so external cmds stay allowed in this shell
+        # and cleanup always happens
+        (
+            # shellcheck disable=SC1091
+            source "${PORTAGE_BIN_PATH}"/ebuild.sh || exit 1
+
+            # print every function/variable
+            set
+        )
+
+        # cleanup
+        exec 3>&-
+        rmdir "${PORTAGE_BUILDDIR}"{/empty,}
+    )
+
+    return 1
+}
+
+function main() {
+    parse_args "${@}" || return 1
+
+    local var val
+    for var in "${VARIABLES[@]}"; do
+        if val="$(get_ebuild_variable "${var}")"; then
+            printf '%s=%s\n' "${var}" "${val}"
+        else
+            printf '%s is not set\n' "${var}"
+        fi
+    done
+}
+
+main "${@}"
