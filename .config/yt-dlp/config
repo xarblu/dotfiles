@@ -1,0 +1,5 @@
+# use current time not upload time
+--no-mtime
+
+# https://github.com/yt-dlp/yt-dlp/issues/14456
+--extractor-args "youtube:player_client=default,-tv_simply"
