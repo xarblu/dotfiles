@@ -67,8 +67,8 @@ function fix-jf-media-permissions() {
     ${sudo} chown -R root:root "${library}"
 
     eprintf --info "Changing directory mode to 755\n"
-    ${sudo} find "${library}" -type d -exec chmod 755 \;
+    ${sudo} find "${library}" -type d -exec chmod 755 '{}' +
 
     eprintf --info "Changing file mode to 644\n"
-    ${sudo} find "${library}" -type f -exec chmod 644 \;
+    ${sudo} find "${library}" -type f -exec chmod 644 '{}' +
 }
