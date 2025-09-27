@@ -31,7 +31,7 @@ function cmake-it() {
 function mkcd() {
     if (( ${#} != 1 )); then
         eprintf --error "usage: <directory>\n"
-        return
+        return 1
     fi
 
     local dir="$1"
@@ -48,6 +48,11 @@ function mkcd() {
 }
 
 function fix-jf-media-permissions() {
+    if (( ${#} != 1 )); then
+        eprintf --error "usage: <directory>\n"
+        return 1
+    fi
+
     local library="${1}"
     local sudo="${SUDO:-sudo}"
 
