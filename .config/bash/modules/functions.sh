@@ -46,3 +46,24 @@ function mkcd() {
         return 1
     fi
 }
+
+function fix-jf-media-permissions() {
+    local library="${1}"
+    local sudo="${SUDO:-sudo}"
+
+    if [[ ! -d "${library}" ]]; then
+        eprintf --error "Library does not exist: ${library}\n"
+        return 1
+    fi
+
+    eprintf --info "Fixing permissions of library: ${library}\n"
+
+    eprintf --info "Changing owner to root:root\n"
+    ${sudo} chown -R root:root "${library}"
+
+    eprintf --info "Changing directory mode to 755\n"
+    ${sudo} find "${library}" -type d -exec chmod 755 \;
+
+    eprintf --info "Changing file mode to 644\n"
+    ${sudo} find "${library}" -type f -exec chmod 644 \;
+}
