@@ -72,3 +72,8 @@ function fix-jf-media-permissions() {
     eprintf --info "Changing file mode to 644\n"
     ${sudo} find "${library}" -type f -exec chmod 644 '{}' +
 }
+
+function cat-now() {
+    has_cmds curl jq xargs viu || return 1
+    curl -s 'https://api.thecatapi.com/v1/images/search' | jq -r '.[0]["url"]' | xargs -n1 curl -s | TERM=xterm viu -
+}
