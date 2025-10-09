@@ -88,3 +88,17 @@ function git-checkout-tagged() {
 
     git checkout "${tag}"
 }
+
+# emerge wrapper to emerge an ebuild from the cwd
+function dev-emerge() {
+    if [[ ! -f ../../metadata/layout.conf ]]; then
+        eprintf --error "Not in a leaf directory of a portage tree."
+        return 1
+    fi
+
+    sudo \
+        FEATURES="-userpriv -usersandbox -userfetch" \
+        PORTDIR_OVERLAY="../.." \
+        PORTAGE_REPO_DUPLICATE_WARN="0" \
+        emerge "${@}"
+}
