@@ -75,5 +75,16 @@ function fix-jf-media-permissions() {
 
 function cat-now() {
     has_cmds curl jq xargs viu || return 1
-    curl -s 'https://api.thecatapi.com/v1/images/search' | jq -r '.[0]["url"]' | xargs -n1 curl -s | TERM=xterm viu -
+    curl -s 'https://api.thecatapi.com/v1/images/search' | jq -r '.[0]["url"]' | xargs curl -# | TERM=xterm viu -
+}
+
+# checkout last tagged released
+function git-checkout-tagged() {
+    local tag
+    if ! tag=$(git describe --abbrev=0 origin/HEAD); then
+        eprintf --error "Failed to grab latest tag"
+        return 1
+    fi
+
+    git checkout "${tag}"
 }
