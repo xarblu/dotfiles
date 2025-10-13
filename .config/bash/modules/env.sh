@@ -26,9 +26,10 @@ export PATH="${XDG_DATA_HOME:-${HOME}/.local/share}/npm/bin:${HOME}/.local/bin:$
 # stop ksshaskpass from popping up
 unset SSH_ASKPASS
 
-# have zstd use all available threads if called
+# compression tool defaults
 export ZSTD_NBTHREADS=0
 export ZSTD_CLEVEL=10
+export XZ_DEFAULTS='-9 -T0'
 
 # GPG fails without this variable set
 GPG_TTY=$(tty)
