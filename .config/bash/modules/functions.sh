@@ -100,5 +100,6 @@ function dev-emerge() {
         FEATURES="-userpriv -usersandbox -userfetch" \
         PORTDIR_OVERLAY="../.." \
         PORTAGE_REPO_DUPLICATE_WARN="0" \
+        USE="${USE}" \
         emerge "${@}"
 }
