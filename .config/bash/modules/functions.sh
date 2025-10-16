@@ -3,7 +3,7 @@
 # wrapper around cmake to do a full build
 function cmake-it() {
     if [[ ! -f ../CMakeLists.txt ]]; then
-        eprintf --error "Parent directory does not contain CMakeLists.txt\n"
+        log --error "Parent directory does not contain CMakeLists.txt"
         return 1
     fi
 
@@ -13,7 +13,7 @@ function cmake-it() {
         -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
         ..
     then
-        eprintf --error "cmake configure failed\n"
+        log --error "cmake configure failed"
         return 1
     fi
 
@@ -22,7 +22,7 @@ function cmake-it() {
         -- \
         -j"$(nproc)"
     then
-        eprintf --error "cmake build failed\n"
+        log --error "cmake build failed"
         return 1
     fi
 }
@@ -30,26 +30,26 @@ function cmake-it() {
 # create a directory and cd into it
 function mkcd() {
     if (( ${#} != 1 )); then
-        eprintf --error "usage: <directory>\n"
+        log --error "usage: <directory>"
         return 1
     fi
 
     local dir="$1"
 
     if ! mkdir -p "${dir}"; then
-        eprintf --error "Creating ${dir} failed\n"
+        log --error "Creating ${dir} failed"
         return 1
     fi
 
     if ! cd "${dir}"; then
-        eprintf --error "Could not change into ${dir}\n"
+        log --error "Could not change into ${dir}"
         return 1
     fi
 }
 
 function fix-jf-media-permissions() {
     if (( ${#} != 1 )); then
-        eprintf --error "usage: <directory>\n"
+        log --error "usage: <directory>"
         return 1
     fi
 
@@ -57,19 +57,19 @@ function fix-jf-media-permissions() {
     local sudo="${SUDO:-sudo}"
 
     if [[ ! -d "${library}" ]]; then
-        eprintf --error "Library does not exist: ${library}\n"
+        log --error "Library does not exist: ${library}"
         return 1
     fi
 
-    eprintf --info "Fixing permissions of library: ${library}\n"
+    log --info "Fixing permissions of library: ${library}"
 
-    eprintf --info "Changing owner to root:root\n"
+    log --info "Changing owner to root:root"
     ${sudo} chown -R root:root "${library}"
 
-    eprintf --info "Changing directory mode to 755\n"
+    log --info "Changing directory mode to 755"
     ${sudo} find "${library}" -type d -exec chmod 755 '{}' +
 
-    eprintf --info "Changing file mode to 644\n"
+    log --info "Changing file mode to 644"
     ${sudo} find "${library}" -type f -exec chmod 644 '{}' +
 }
 
@@ -82,7 +82,7 @@ function cat-now() {
 function git-checkout-tagged() {
     local tag
     if ! tag=$(git describe --abbrev=0 origin/HEAD); then
-        eprintf --error "Failed to grab latest tag"
+        log --error "Failed to grab latest tag"
         return 1
     fi
 
@@ -92,9 +92,24 @@ function git-checkout-tagged() {
 # emerge wrapper to emerge an ebuild from the cwd
 function dev-emerge() {
     if [[ ! -f ../../metadata/layout.conf ]]; then
-        eprintf --error "Not in a leaf directory of a portage tree."
+        log --error "Not in a leaf directory of a portage tree."
         return 1
     fi
+
+    if (( ${#} == 0 )); then
+        local ebuild
+        ebuild=$(find . -name '*.ebuild' -type f | sort -u | head -1)
+
+        if [[ -z "${ebuild}" ]]; then
+            log --error "Could not auto detect latest ebuild in current directory"
+            return 1
+        fi
+
+        log --info 'Auto detected latest ebuild: %s' "${ebuild}"
+        set -- --oneshot "${ebuild}"
+    fi
+    
+    log --info "emerge args: %s" "${*}"
 
     sudo \
         FEATURES="-userpriv -usersandbox -userfetch" \

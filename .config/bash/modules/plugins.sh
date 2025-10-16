@@ -7,7 +7,7 @@
 # installation steps for ble.sh
 function __blesh_install__() {
     if ! has_cmds git make; then
-        eprintf --error "ble.sh installation requires git and make\n"
+        log --error "ble.sh installation requires git and make"
     fi
 
     git clone --recursive --depth 1 --shallow-submodules \
@@ -23,14 +23,14 @@ function __blesh_install__() {
 function __blesh_init__() {
     local blesh_file="${BASH_PLUGDIR}/ble.sh/out/ble.sh"
     if [[ ! -f "${blesh_file}" ]]; then
-        eprintf --info "ble.sh not installed at %s. Installing...\n" "${blesh_file}"
+        log --info "ble.sh not installed at %s. Installing..." "${blesh_file}"
         __blesh_install__
     fi
 
     # warn if mawk isn't available
     # gawk "works" but is suboptimal e.g. for multibyte chars
     if ! has_cmds mawk; then
-        eprintf --warn "Recommended awk implementation mawk not found\n"
+        log --warn "Recommended awk implementation mawk not found"
     fi
     
     # re-check in case install failed
@@ -38,7 +38,7 @@ function __blesh_init__() {
         # shellcheck disable=SC1090
         source -- "${blesh_file}" --attach=none
     else
-        eprintf --error "%s does not exist\n" "${blesh_file}"
+        log --error "%s does not exist" "${blesh_file}"
         return 1
     fi
 }
@@ -54,7 +54,7 @@ function __blesh_finalize__() {
 # initialise plugins (install + load)
 function __plugins_init__() {
     if [[ -z "${BASH_PLUGDIR}" ]]; then
-        eprintf --error "BASH_PLUGDIR is not set"
+        log --error "BASH_PLUGDIR is not set"
         return 1
     fi
 
