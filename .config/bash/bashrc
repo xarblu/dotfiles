@@ -14,7 +14,7 @@ function __main__() {
     # only proceed if we could load everything we
     # expected to avoid a completely broken shell
     local mod
-    for mod in env utils plugins misc external functions; do
+    for mod in env utils plugins misc external functions containers; do
         if [[ -f "${moddir}/${mod}.sh" ]]; then
             # shellcheck disable=SC1090,SC1091
             source -- "${moddir}/${mod}.sh"
@@ -35,6 +35,9 @@ function __main__() {
 
     # setup stuff related to external tools
     __external_setup__ || log --warn "External setup did not exit cleanly"
+
+    # container stuff
+    __containers_init__ || log --warn "Containers init did not exit cleanly"
 
     # finalize plugins - this should be at the very end
     __plugins_finalize__ || log --warn "Plugin finalisation did not exit cleanly"
