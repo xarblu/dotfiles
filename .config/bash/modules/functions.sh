@@ -11,6 +11,7 @@ function cmake-it() {
         -DCMAKE_C_COMPILER="${CC:-clang}" \
         -DCMAKE_CXX_COMPILER="${CXX:-clang++}" \
         -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+        "${@}" \
         ..
     then
         log --error "cmake configure failed"
