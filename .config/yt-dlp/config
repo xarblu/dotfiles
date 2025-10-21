@@ -3,3 +3,6 @@
 
 # https://github.com/yt-dlp/yt-dlp/issues/14456
 --extractor-args "youtube:player_client=default,-tv_simply"
+
+# avoids most cases of yt blocking a download
+--cookies-from-browser firefox
