@@ -1,0 +1,91 @@
+#!/usr/bin/env bash
+
+declare -g NODES
+declare -g REBUILD=0
+
+function print_help() {
+    printf 'Usage: %s [-h|--help] package:node...\n' "${BASH_SOURCE[0]}"
+    printf 'Flags:\n'
+    printf '  -h|--help     Print this help\n'
+    printf '  -r|--rebuild  Run colcon build before starting\n'
+}
+
+function parse_args() {
+    while (( ${#} > 0 )); do
+        case "${1}" in
+            -h|--help)
+                print_help
+                exit 0
+                ;;
+            -r|--rebuild)
+                REBUILD=1
+                ;;
+            -*)
+                printf 'Bad flag: %s\n' "${1}"
+                exit 1
+                ;;
+            *)
+                NODES+=("${1}")
+                ;;
+        esac
+        shift
+    done
+
+    if (( ${#NODES[@]} == 0 )); then
+        printf 'At least one node is required\n'
+        exit 1
+    fi
+}
+
+function check-req() {
+    local cmd="${1}"
+    if ! command -v "${cmd}" &>/dev/null; then
+        printf 'Command %s is required\n' "${cmd}"
+        exit 1
+    fi
+}
+
+function cleanup() {
+    local pid
+    for pid in $(jobs -p); do
+        printf 'Killing process %d\n' "${pid}"
+        kill "${pid}"
+    done
+}
+
+function main() {
+    parse_args "${@}"
+    
+    check-req ros2
+
+    if (( REBUILD )); then
+        check-req colcon
+
+        if ! colcon build; then
+            exit 1
+        fi
+    fi
+
+    # shellcheck disable=SC1091
+    if ! source 'install/local_setup.bash'; then
+        printf 'Could not source install/local_setup.bash\n'
+        printf 'Is this this a ros workspace?\n'
+        exit 1
+    fi
+
+    local spec
+    for spec in "${NODES[@]}"; do
+        local package node
+        IFS=':' read -r package node <<<"${spec}"
+        printf 'Launching %s from %s\n' "${node}" "${package}"
+        ros2 run "${package}" "${node}" &
+    done
+
+    trap cleanup EXIT
+
+    # exit if a job failed
+    if ! wait -n; then
+        exit 1
+    fi
+}
+main "${@}"
