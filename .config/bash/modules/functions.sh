@@ -120,3 +120,29 @@ function dev-emerge() {
         ENABLE_SCCACHE="true" \
         emerge "${@}"
 }
+
+function what-depends-on() {
+    local pattern="${1}"
+
+    if [[ -z "${pattern}" ]]; then
+        log --error 'argument required: pattern'
+    fi
+
+    has_cmds eix xargs rg || return 1
+
+    # TODO maybe detect repos from repos.conf
+    for repo in \
+            gentoo \
+            guru \
+            kde \
+            gentoo-zh \
+            xarblu-overlay \
+            steam-overlay \
+            haskell; do
+
+        eix --installed-from-overlay "${repo}" --only-names \
+            | xargs -rn1 qdepends \
+            | rg zlib
+
+    done
+}
