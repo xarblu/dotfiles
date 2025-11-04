@@ -142,7 +142,7 @@ function what-depends-on() {
 
         eix --installed-from-overlay "${repo}" --only-names \
             | xargs -rn1 qdepends \
-            | rg zlib
+            | rg "${pattern}"
 
     done
 }
