@@ -117,7 +117,6 @@ function dev-emerge() {
         PORTDIR_OVERLAY="../.." \
         PORTAGE_REPO_DUPLICATE_WARN="0" \
         USE="${USE}" \
-        ENABLE_SCCACHE="true" \
         emerge "${@}"
 }
 
@@ -142,7 +141,10 @@ function what-depends-on() {
 
         eix --installed-from-overlay "${repo}" --only-names \
             | xargs -rn1 qdepends \
-            | rg "${pattern}"
+            | rg "${pattern}" \
+            | perl -p -e 's|(.*): .*|~\1|' \
+            | perl -p -e 's|(kde-.*)-6.5.1|\1-6.5.2|' \
+            | perl -p -e 's|.*sys-libs/zlib.*||'
 
     done
 }
