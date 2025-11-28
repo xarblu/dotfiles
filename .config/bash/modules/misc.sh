@@ -12,9 +12,10 @@ function __misc_setup__() {
     # allow cd without cd
     shopt -s autocd
 
-    # recursive glob with **
+    # more useful interactive globs
+    # match hidden files, recursive
+    # and return empty if not matched
+    shopt -s dotglob
     shopt -s globstar
-
-    # no match -> empty
     shopt -s nullglob
 }
