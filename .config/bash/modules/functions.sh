@@ -160,6 +160,7 @@ function podman-pull-all() {
     local dir="${1}"
     if [[ ! -d "${dir}" ]]; then
         log --error 'argument required: dir'
+        return 1
     fi
 
     has_cmds perl podman xargs "${SUDO:-sudo}" || return 1
