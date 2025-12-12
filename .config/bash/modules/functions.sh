@@ -150,8 +150,19 @@ function what-depends-on() {
 }
 
 # basic default formatting for C/C++
-function clang-quick-format {
+function clang-quick-format() {
     clang-format \
         --style='{BasedOnStyle: llvm, IndentWidth: 4}' \
         "${@}"
+}
+
+function podman-pull-all() {
+    local dir="${1}"
+    if [[ ! -d "${dir}" ]]; then
+        log --error 'argument required: dir'
+    fi
+
+    has_cmds perl podman xargs "${SUDO:-sudo}" || return 1
+
+    perl -n -e 'print "$1\n" if /Image=(\S+)/' "${dir}"/*.container | sudo xargs podman pull
 }
