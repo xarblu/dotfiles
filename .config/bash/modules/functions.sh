@@ -152,7 +152,7 @@ function what-depends-on() {
 # basic default formatting for C/C++
 function clang-quick-format() {
     clang-format \
-        --style='{BasedOnStyle: llvm, IndentWidth: 4}' \
+        --style='{BasedOnStyle: llvm, IndentWidth: 4, ReflowComments: false}' \
         "${@}"
 }
 
