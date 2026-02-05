@@ -18,4 +18,8 @@ function __misc_setup__() {
     shopt -s dotglob
     shopt -s globstar
     shopt -s nullglob
+
+    # remove export attr from these
+    # so e.g. ncurses doesn't pick it up
+    export -n COLUMNS LINES
 }
