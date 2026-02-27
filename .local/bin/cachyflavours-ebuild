@@ -21,7 +21,7 @@ function main() {
     local flavour
     local -a failed
     for flavour in "${FLAVOURS[@]}"; do
-        set - env USE="${FLAVOURS[*]/#/-} ${flavour}" ebuild "${eargs[@]}"
+        set - env USE="${USE} ${FLAVOURS[*]/#/-} ${flavour}" ebuild "${eargs[@]}"
         printf "%s\n" "${*}"
         if ! "${@}"; then
             failed+=( "${flavour}" )
