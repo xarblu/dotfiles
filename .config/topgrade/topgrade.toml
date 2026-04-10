@@ -28,7 +28,7 @@ sudo_loop = true
 # sudo_command = "sudo"
 
 # Disable specific steps - same options as the command line flag
-disable = ["git_repos", "dotnet", "gcloud", "gem", "go", "home_manager", "rustup", "pip3", "shell", "containers"]
+disable = ["git_repos", "dotnet", "gcloud", "gem", "go", "home_manager", "rustup", "pip3", "shell", "containers", "opam"]
 
 # Run these steps before all others
 # first = ["chezmoi"]
