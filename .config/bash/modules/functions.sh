@@ -167,3 +167,22 @@ function podman-pull-all() {
 
     perl -n -e 'print "$1\n" if /Image=(\S+)/' "${dir}"/*.container | sudo xargs podman pull
 }
+
+# simple tmux launcher to attach to an existing
+# session if one exists or launch a new one
+# no-op if already in a tmux session
+# if arguments are present mirrors default behaviour
+function tmux() {
+    # the real tmux
+    # shellcheck disable=SC2155
+    local tmux="$(type -P tmux)"
+
+    if (( ${#} > 0 )); then
+        "${tmux}" "${@}"
+        return
+    fi
+
+    [[ -n "${TMUX}" ]] && return
+
+    "${tmux}" attach || "${tmux}"
+}
