@@ -1,7 +1,6 @@
 return {
     spec = {
-        src = "https://github.com/folke/noice.nvim",
-        name = "noice"
+        src = "https://github.com/folke/noice.nvim"
     },
     dependencies = {
         "nui",
