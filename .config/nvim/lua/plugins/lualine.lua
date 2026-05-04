@@ -1,0 +1,17 @@
+return {
+    spec = {
+        src = "https://github.com/nvim-lualine/lualine.nvim"
+    },
+    dependencies = {
+        "nvim-web-devicons"
+    },
+    config = function()
+        require("lualine").setup({
+            options = {
+                theme = "auto",
+                component_separators = '',
+                section_separators = { left = '', right = '' },
+            }
+        })
+    end
+}
