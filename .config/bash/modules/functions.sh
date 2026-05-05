@@ -113,7 +113,7 @@ function dev-emerge() {
     log --info "emerge args: %s" "${*}"
 
     sudo \
-        FEATURES="-userpriv -usersandbox -userfetch" \
+        FEATURES="-userpriv -usersandbox -userfetch ${FEATURES}" \
         PORTDIR_OVERLAY="../.." \
         PORTAGE_REPO_DUPLICATE_WARN="0" \
         USE="${USE}" \
