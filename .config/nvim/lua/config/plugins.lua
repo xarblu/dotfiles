@@ -8,11 +8,11 @@ local plugins = {
     "presence",
     "suda",
     "gitsigns",
-    "nvim-treesitter",
     "gentoo-syntax",
     "indent-blankline",
     "nvim-lspconfig",
     "blink-cmp",
+    "tree-sitter-manager",
 }
 
 local loaded = {}

@@ -6,7 +6,7 @@ return {
         "nui",
         "nvim-notify",
         "nvim-cmp",
-        "nvim-treesitter",
+        "tree-sitter-manager",
     },
     config = function()
         require("noice").setup({
