@@ -1,7 +1,7 @@
 [user]
 	email = xarblu@protonmail.com
 	name = Xarblu
-	signingkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOKFlJ45COD0I+BNnPWy73Xgj6rawnc1RW347JHoOirs Xarblu"
+	signingkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFVKARfTVbjqTsZY9NfDtYdGG7nZjYkZFo0q03s5cZJu"
 [color]
 	ui = auto
 [git]
