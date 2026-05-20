@@ -54,10 +54,9 @@ function __external_setup__() {
     # bitwarden ssh agent
     if [[ -S "${HOME}/.bitwarden-ssh-agent.sock" ]]; then
         export SSH_AUTH_SOCK="${HOME}/.bitwarden-ssh-agent.sock"
-    fi
 
     # goldwarden ssh agent
-    if [[ -S "${HOME}/.goldwarden-ssh-agent.sock" ]]; then
+    elif [[ -S "${HOME}/.goldwarden-ssh-agent.sock" ]]; then
         export SSH_AUTH_SOCK="${HOME}/.goldwarden-ssh-agent.sock"
     fi
 
