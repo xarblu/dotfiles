@@ -15,6 +15,17 @@ vim.opt.syntax = "on"
 vim.opt.filetype.plugin = "on"
 vim.opt.filetype.indent = "on"
 
+-- explicit filetypes
+vim.filetype.add({
+    extension = {
+        -- at least in my projects:
+        -- .h -> C
+        -- .hpp -> C++
+        h = "c",
+        hpp = "cpp",
+    },
+})
+
 -- clipboard
 vim.opt.clipboard = "unnamedplus"
 
