@@ -100,7 +100,7 @@ function get_ebuild_variable() {
 
 
         # where ebuild.sh is located
-        PORTAGE_BIN_PATH=/usr/lib/portage/python3.13
+        PORTAGE_BIN_PATH=/usr/lib/portage/python3.14
 
         # repos used for eclass lookup, just gentoo for now
         # shellcheck disable=SC2034
