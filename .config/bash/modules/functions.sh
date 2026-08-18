@@ -165,7 +165,7 @@ function podman-pull-all() {
 
     has_cmds perl podman xargs "${SUDO:-sudo}" || return 1
 
-    perl -n -e 'print "$1\n" if /Image=(\S+)/' "${dir}"/*.container | sudo xargs podman pull
+    perl -n -e 'print "$1\n" if /^Image=(\S+)/' "${dir}"/*.container | sudo xargs podman pull
 }
 
 # simple tmux launcher to attach to an existing
