@@ -1,5 +1,35 @@
 # misc functions for interactive sessions
 
+# sudo wrapper for the chosen sudo implementation
+function sudo() {
+    local sudo="${SUDO:-sudo}"
+
+    # resolve to absolute path
+    while [[ "${sudo:0:1}" != "/" ]]; do
+        case "${sudo}" in
+            sudo)
+                if ! sudo="$(type -P sudo)" >/dev/null; then
+                    log --error "command found: 'sudo'"
+                    return 127
+                fi
+                ;;
+            # only support a known subset
+            run0|doas|pkexec)
+                if ! sudo="$(type -P "${SUDO}")" >/dev/null; then
+                    log --warn "chosen \${SUDO} value ${SUDO@Q} not found; trying 'sudo'"
+                    sudo=sudo
+                fi
+                ;;
+            *)
+                log --error "unknown \${SUDO} value ${SUDO@Q}; trying 'sudo'"
+                sudo=sudo
+                ;;
+        esac
+    done
+
+    "${sudo}" "${@}"
+}
+
 # wrapper around cmake to do a full build
 function cmake-it() {
     if [[ ! -f ../CMakeLists.txt ]]; then
