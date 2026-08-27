@@ -1,22 +1,24 @@
 #!/usr/bin/env bash
 
+# shellcheck disable=SC2034
+
 ### Environment variables for bash itself
 
 # base data directory for non-config state
 BASH_DATA_DIR="${XDG_DATA_HOME:-"${HOME}/.local/share"}/bash"
 
 # plugin directory
-# shellcheck disable=SC2034
 BASH_PLUGDIR="${BASH_DATA_DIR}/plugins"
 
 # secrets file
-# shellcheck disable=SC2034
 BASH_SECRETS_FILE="${BASH_CONF_DIR}/.secrets"
 
 # bash history
 HISTFILE="${BASH_DATA_DIR}/history"
 HISTSIZE=100000
 
+# sudo implementation
+SUDO=run0
 
 ### Exported environment variables
 
