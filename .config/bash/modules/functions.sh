@@ -85,7 +85,6 @@ function fix-jf-media-permissions() {
     fi
 
     local library="${1}"
-    local sudo="${SUDO:-sudo}"
 
     if [[ ! -d "${library}" ]]; then
         log --error "Library does not exist: ${library}"
@@ -95,13 +94,13 @@ function fix-jf-media-permissions() {
     log --info "Fixing permissions of library: ${library}"
 
     log --info "Changing owner to root:root"
-    ${sudo} chown -R root:root "${library}"
+    sudo chown -R root:root "${library}"
 
     log --info "Changing directory mode to 755"
-    ${sudo} find "${library}" -type d -exec chmod 755 '{}' +
+    sudo find "${library}" -type d -exec chmod 755 '{}' +
 
     log --info "Changing file mode to 644"
-    ${sudo} find "${library}" -type f -exec chmod 644 '{}' +
+    sudo find "${library}" -type f -exec chmod 644 '{}' +
 }
 
 function cat-now() {
