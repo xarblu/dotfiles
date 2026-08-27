@@ -193,7 +193,7 @@ function podman-pull-all() {
         return 1
     fi
 
-    has_cmds perl podman xargs "${SUDO:-sudo}" || return 1
+    has_cmds perl podman xargs || return 1
 
     perl -n -e 'print "$1\n" if /^Image=(\S+)/' "${dir}"/*.container | sudo xargs podman pull
 }
