@@ -18,7 +18,10 @@ HISTFILE="${BASH_DATA_DIR}/history"
 HISTSIZE=100000
 
 # sudo implementation
-SUDO=run0
+case "${XDG_SESSION_TYPE}" in
+    wayland|x11) SUDO=run0 ;;
+    *) SUDO=sudo ;;
+esac
 
 ### Exported environment variables
 
