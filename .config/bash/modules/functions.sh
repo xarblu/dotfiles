@@ -3,52 +3,15 @@
 # sudo wrapper for the chosen sudo implementation
 function sudo() {
     local sudo="${SUDO:-sudo}"
-    local arg
-    local sudo_args=()
 
-    # TODO: this needs some better logic
-    for arg; do
-        case "${arg}" in
-            -u)
-                sudo_args+=( "${1}" "${2}" )
-                shift 2
-                ;;
-            -*)
-                sudo_args+=( "${1}" )
-                shift 1
-                ;;
-            *) break ;;
-        esac
-    done
+    # resolve actual binary from PATH or
+    # we would call ourself indefinitely
+    if ! sudo="$(type -P "${sudo}")" >/dev/null; then
+        log --error "command found: ${sudo@Q}"
+        return 127
+    fi
 
-    # resolve to absolute path
-    while [[ "${sudo:0:1}" != "/" ]]; do
-        case "${sudo}" in
-            sudo)
-                if ! sudo="$(type -P sudo)" >/dev/null; then
-                    log --error "command found: 'sudo'"
-                    return 127
-                fi
-                ;;
-            # only support a known subset
-            run0|doas|pkexec)
-                if ! sudo="$(type -P "${SUDO}")" >/dev/null; then
-                    log --warn "chosen \${SUDO} value ${SUDO@Q} not found; trying 'sudo'"
-                    sudo=sudo
-                    continue
-                fi
-
-                # e.g. run0 doesn't support the "sudo VAR=val cmd" syntax so emulate it with env
-                sudo_args+=( env )
-                ;;
-            *)
-                log --error "unknown \${SUDO} value ${SUDO@Q}; trying 'sudo'"
-                sudo=sudo
-                ;;
-        esac
-    done
-
-    "${sudo}" "${sudo_args[@]}" "${@}"
+    "${sudo}" "${@}"
 }
 
 # wrapper around cmake to do a full build
