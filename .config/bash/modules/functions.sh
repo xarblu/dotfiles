@@ -130,6 +130,7 @@ function dev-emerge() {
         PORTDIR_OVERLAY="../.." \
         PORTAGE_REPO_DUPLICATE_WARN="0" \
         USE="${USE}" \
+        ENABLE_SCCACHE="${ENABLE_SCCACHE:-true}" \
         emerge "${@}"
 }
 
