@@ -22,3 +22,5 @@
 	smudge = git-lfs smudge -- %f
 [rerere]
 	enabled = true
+[fetch]
+	all = true
